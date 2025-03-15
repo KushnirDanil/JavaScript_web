@@ -1,21 +1,21 @@
-// Коментар на 1 рядок 
+// коментар на 1 рядок
 
 /*
-Коментар 
-На декілька
-Рядків
+коментра
+на декілька 
+рядків
 */
 
-// Зсіні
+// змінні
 let name = 'Vany';
-let namber = 423;
-let nambeR = 345;
-let fullName = 'Петро Петренко';
-let full_name = 'Петро Петренко'; // Неправильно
-let myList = [1,2,536,734];
-let ,meDic = {'name':'Давид', age:25};
+let number = 423;
+let numbeR = 345;
+let fullName = 'Петро Петроенко';
+let full_name = 'Петро Петроенко';
+let myList = [1,2,36,987];
+let meDic = {'name':'Давид', age:25};
 let b = true;
 
-number = namber + nambeR;
+number = number + numbeR;
 
-const Name = "Daniil"
+const NAME = "Michael"

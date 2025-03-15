@@ -1,12 +1,11 @@
 const LABEL_NAME = [
     "Як звати тебе?", 
     "Тебе то як звати?", 
-    "Ім'я твоє яке, юний падаван?",
+    "Ім'я твоє яке, юний падаван?", 
     "Хто ти такий, малий?",
     "Як назвали тебе батьки твої?",
     "Ім'я твоє, скажи мені, юний учню Сили?"
 ];
-
 const LABEL_AGE = [
     "Готовий чи ти, юний падаване? І скільки літ минуло з твого народження?",
     "Готовий до випробувань? Скільки циклів обернулося навколо сонця з часу твого появлення?",
@@ -19,31 +18,33 @@ const LABEL_AGE = [
     "Чи готовий ти до відповідальності? Скільки років прийняв ти самостійно?",    
     'Чи готовий ти? Маєш років скільки?'
 ];
-
 const LABEL_AGE_ERROR = [
     "Рахувти ти не вмієш, далеко тобі до сили Джедая",
-"Що за нерозумне, математики тут не знаєш, не бачити тобі сили",
-"О..оо, ти зявився чого сюди, науки іди вчитися людської. Цифри зрозумій!"
+    "Що за нерозумне, математики тут не знаєш, не бачити тобі сили",
+    "О..оо, ти зявився чого сюди, науки іди вчитися людської. Цифри зрозумій!."
 ]
 
 let randomLabelName = Math.floor(Math.random() * LABEL_NAME.length);
-// Отримати значенння від користовуча
+// отримати значення від користувача  - prompt
 let userName = prompt(LABEL_NAME[randomLabelName]);
 
+
 let randomLabelAge = Math.floor(Math.random() * LABEL_AGE.length);
-let userAge = prompt(LABEL_AGE[randomLabelAge]);
-
-
+let userAge;
+userAge = prompt(LABEL_AGE[randomLabelAge]);
 
 let message = '';
 
-if (isNaN(userAge)){
+if (isNaN(userAge)) {
     // 1 -
-    message = LABEL_AGE_ERRORjhjh[Math.floor(Math.random() * LABEL_AGE_ERROR.length)];
+    message = LABEL_AGE_ERROR[Math.floor(Math.random() * LABEL_AGE_ERROR.length)]
 } else {
     // 2 +
-    message = '<h2>' + userName + '</h2>'
+    message = '<h2>' + userName + '</h2>';
 }
+
 
 let jedi = document.getElementById("jedi");
 jedi.innerHTML = message;
+
+
