@@ -46,6 +46,10 @@ if (confirm("Ви звреєстрований колристувач?")){
 
 console.log(userType)
 
-let content = "<div> </div>"
+let content = "<div><header><h1>Funka</h1></header>"
+
+// TODO: Вивести товари, з різними цінами в залежності від користувача
+
+content += "</div>"
 
 document.body.innerHTML = content
