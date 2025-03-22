@@ -28,14 +28,15 @@ while(notAnswer){
             alert("Ви ввели не правильний варіант")
     }
 }
-let header = "<header><h1>Пірати карибського моря</h1><hr>";
+
 let container = "<div class='"+selectedStyle+"'>"
+let header = "<header><h1>Пірати карибського моря</h1><hr>";
 
 let moviesList ="<ul>"
 let li = ''
 let descriptionText = ''
 for (let i = 0; i < movies.length; i++) {
-    li += '<li> <img src="images/'+ movies[i][1] +'"><br><a hreaf= "#">'+ movies[i][0] +'</a>  </li>'
+    li += '<li> <img src="images/'+ movies[i][1] +'"><br><a href= "#">'+ movies[i][0] +'</a>  </li>'
 
     descriptionText += "<article><h3>"+ movies[i][0] +"</h3><p>"+ movies[i][2] +"</p></article>"
 }
