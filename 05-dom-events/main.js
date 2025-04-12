@@ -8,9 +8,14 @@ for (let i = 0; i < buttons.length ; i++) {
     //console.log(buttons[i])
     buttons[i].onclick = function(e){
         //console.log(e)
-        rulesModalWindow.style.display = 'none'
+        rulesModalWindow.style.display = 'none';
     }
 
+}
+
+let openHelp = document.querySelector('main button')
+openHelp.onclick = function(){
+    rulesModalWindow.style.display = 'flex';
 }
 
 const boardItems = [
@@ -28,17 +33,58 @@ const boardItems = [
     {name: 'squirtle', img:'squirtle.png'},
 ]
 
+boardItems.sort(()=>Math.random() - 0.5)
+
 let images = 'images/'
 let initImg = 'pokeball.jpg'
+let selectImg = 'pokecoin.jpg'
 let sectionBoard = document.getElementById('board')
+let cardsId = []
+let countResult = 0
+let spanResult = document.getElementById('result')
 
-function flipImg(){}
+function flipImg(e){
+    let id = this.getAttribute('id')
+        
+
+        console.log('i', cardsId, cardsId.length, cardsId.length < 3)
+    
+    if (cardsId.length <3 && !cardsId.includes(id)){
+        this.setAttribute('src', images + boardItems[id].img)
+        
+        cardsId.push(id)
+
+        console.log('ids=', cardsId)  
+
+        if (cardsId.length === 2)
+            setTimeout(checkCards, 400)
+    }
+}
+
+function checkCards(){  
+    countResult++
+    let item1 = document.getElementById(cardsId[0])
+    let item2 = document.getElementById(cardsId[1])
+
+    if (item1.getAttribute('src') === item2.getAttribute('src')){
+
+        item1.setAttribute('src', images + selectImg)
+        item2.setAttribute('src', images + selectImg)
+        item1.onclick = ''
+        item2.onclick = ''
+    } else{
+        item1.setAttribute('src', images + initImg)
+        item2.setAttribute('src', images + initImg)
+    }
+    cardsId = []
+    spanResult.innerHTML = countResult
+}
 
 function createBoard(number=12){
     for (let i=0; i < number ;i++) {
         let img = document.createElement('img')
         img.setAttribute('src', images + initImg)
-        img.setAttribute('id', 'i' + i)
+        img.setAttribute('id', i)
         img.onclick = flipImg
         sectionBoard.append(img)
     }

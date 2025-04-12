@@ -16,6 +16,22 @@ header h1{
     text-transform: uppercase;
 }
 
+
+main button{
+    background-color: #900020;
+}
+
+.board{
+    width: 70%;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+.board img{
+    width: 25%;
+    vertical-align: bottom;
+}
+
 /*--- modal window ---*/
 .rules{
     position: fixed;
@@ -53,3 +69,4 @@ header h1{
 .rules .read button {
     padding: 6px;
 }
+
