@@ -19,3 +19,9 @@
 .shoot {
     background-image: url('img/shoot.png');
 }
+.youwin{
+    background-color: aqua;
+}
+.gameower{
+    background-color: black;
+}

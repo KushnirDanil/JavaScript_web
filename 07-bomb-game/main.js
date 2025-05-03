@@ -19,17 +19,20 @@ let bombs = [
     15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
     30, 31, 32, 33, 34, 35, 36, 37, 38, 39
 ]
+let bombsRemoved=[]
+
 
 function drawBoombs(bombList){
     for (let i = 0; i < bombList.length; i++) {
-        gridDivs[bombs[i]].classList.add('bomb')
+        if(!bombsRemoved.includes(i))
+            gridDivs[bombList[i]].classList.add('bomb')
     }
 }
 drawBoombs(bombs)
 
 function removeBombs(bombList){
     for (let i = 0; i < bombList.length; i++) {
-        gridDivs[bombs[i]].classList.remove('bomb')
+        gridDivs[bombList[i]].classList.remove('bomb')
     }
 }
 
@@ -68,15 +71,14 @@ function shoot(event) {
         
         if(gridDivs[currentShootIndex].classList.contains('bomb')){
             gridDivs[currentShootIndex].classList.remove('bomb')
-            gridDivs[currentShootIndex].classList.add('explosion.png')
+            gridDivs[currentShootIndex].classList.add('explosion')
 
-            
-        }    
-        
-        console.log(setIntervalIndex)
-
-
-        gridDivs[currentShootIndex].classList.add('shoot')
+            bombsRemoved.push(bombs.indexOf(currentShootIndex))
+            clearInterval(setIntervalIndex)
+            gridDivs[currentShootIndex].classList.remove('explosion')
+        }else{
+            gridDivs[currentShootIndex].classList.add('shoot')
+        }
     }
 
     if(event.code == "Space"){
@@ -109,10 +111,19 @@ function moveBombs(bombList){
         console.log(i)
     }
 
-    drawBoombs(bombList)
+    drawBoombs(bombList);
+
+    if(bombList.length === bombsRemoved.length){
+        document.getElementById('main-el').classList.add('youwin')
+        clearInterval(gameLoopId);
+    }
+    if(bombList[bombList.length-1] > 210){
+        document.getElementById('main-el').classList.add('gameover')
+        clearInterval(gameLoopId);
+    }
 }
 
-let gameLoopId = setInterval(moveBombs, 200, bombs)
+let gameLoopId = setInterval(moveBombs, 500, bombs)
 
 document.addEventListener('keydown', moveShooter)
 document.addEventListener('keydown', shoot)
