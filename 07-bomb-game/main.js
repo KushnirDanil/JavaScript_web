@@ -1,7 +1,7 @@
 let shooterGrid = document.getElementById('shooter-grid')
 
-const gridWidth = 15
-const gridHeight = 15
+const gridWidth = 15;
+const gridHeight = 15;
 
 
 // додаємо елементи сітки
@@ -11,7 +11,7 @@ for (let i = 0; i < gridWidth * gridHeight; i++ ){
     shooterGrid.append(div);
 }
 
-const gridDivs = document.querySelectorAll('#shooter-grid div')
+const gridDivs = document.querySelectorAll('#shooter-grid div');
 
 // індекси бобм (положення бомб на сітці)
 let bombs = [
@@ -20,10 +20,18 @@ let bombs = [
     30, 31, 32, 33, 34, 35, 36, 37, 38, 39
 ]
 
-for (let i = 0; i < bombs.length; i++) {
-    gridDivs[bombs[i]].classList.add('bomb')
+function drawBoombs(bombList){
+    for (let i = 0; i < bombList.length; i++) {
+        gridDivs[bombs[i]].classList.add('bomb')
+    }
 }
+drawBoombs(bombs)
 
+function removeBombs(bombList){
+    for (let i = 0; i < bombList.length; i++) {
+        gridDivs[bombs[i]].classList.remove('bomb')
+    }
+}
 
 let shooterIndex = 217;
 gridDivs[shooterIndex].classList.add('shooter')
@@ -76,6 +84,35 @@ function shoot(event) {
     }
 }
 
+let xStep = 1;
+let yStep = 0;
+let directonRight = true
+
+function moveBombs(bombList){
+    
+    removeBombs(bombList)
+    
+    yStep = 0
+    if(directonRight && bombList[bombList.length-1] % gridWidth == gridWidth-1){
+        directonRight = false
+        xStep = - 1
+        yStep = gridWidth
+    }
+    
+    if(!directonRight && bombList[0] % gridWidth == 0){
+        directonRight = true
+        xStep = 1
+        yStep = gridWidth
+    }
+    for(let i = 0; i < bombs.length ;i++){
+        bombs[i] += xStep + yStep
+        console.log(i)
+    }
+
+    drawBoombs(bombList)
+}
+
+let gameLoopId = setInterval(moveBombs, 200, bombs)
 
 document.addEventListener('keydown', moveShooter)
 document.addEventListener('keydown', shoot)
