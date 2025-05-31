@@ -7,9 +7,12 @@ const cHeight = canvas.height;
 const imgFolder = 'images/'
 
 const bgImg = new Image()
-bgImg.src = imgFolder + 'map01_preview-01.png';
+bgImg.src = imgFolder + 'map-01.png';
 
-let gameFrame = 0
+let gameFrame = 0;
+let isRunning = true;
+let requstId = null;
+let score = 0;
 
 let mouse = {
     x: cWidth / 2,
@@ -25,31 +28,30 @@ canvas.addEventListener('mousemove', function(event){
 
 // Клас гравця
 class Player {
+    static heroImg = new Image()
+    static runLeftImg = new Image()
+    static runRightImg = new Image()
+
+    static loadImages(){
+        Player.heroImg.src = imgFolder + 'idle_hero.png'
+        Player.runLeftImg.src = imgFolder + 'run_left.png'
+        Player.runRightImg.src = imgFolder + 'run_right.png'
+    }
     constructor(x = 0, y = 0) {
         this.x = x;
         this.y = y;
-        // герой
-        this.heroImg = new Image()
-        this.heroImg.src = imgFolder + 'idle_hero.png'
-        this.heroMaxFrame = 17
-        // left
-        this.runLeftImg = new Image()
-        this.runLeftImg.src = imgFolder + 'run_left.png'        
-        // right
-        this.runRightImg = new Image()
-        this.runRightImg.src = imgFolder + 'run_right.png'
-        
+        this.heroMaxFrame = 17 
         this.runMaxFrame = 8
-
         this.xFrame = 0 // поточний кадр анімації
         this.sWidth = 43 // ширина кадру
         this.sHeight = 50 
         this.takt = 7
+        this.speed = 5
     }
-    stay() {
-        console.log(mouse, this.xFrame)
+
+    drawImg(img, maxFrame){
         ctx.drawImage(
-            this.heroImg,
+            img,
             this.sWidth * this.xFrame,
             0,
             this.sWidth,
@@ -60,22 +62,30 @@ class Player {
             this.sHeight,
         )
         if (gameFrame % this.takt === 0){
-            if(this.xFrame > this.heroMaxFrame - 2) {
-                this.xFrame = 0
-            } else {
-                this.xFrame++;
-            }
+            this.xFrame = (this.xFrame + 1) % maxFrame
         }
-
+    }
+    stay() {
+        this.drawImg(Player.heroImg, this.heroMaxFrame)
     }
     runLeft(){
-
+        this.drawImg(Player.runLeftImg, this.runMaxFrame)
     }
     runRight() {
-
+        this.drawImg(Player.runRightImg, this.runMaxFrame)
     }
     update() {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx*dx + dy*dy)
 
+        if(distance > this.speed){
+            this.x += (dx/distance) * this.speed
+            this.y += (dy/distance) * this.speed
+        }else{
+            this.x = mouse.x;
+            this.y = mouse.y;
+        }
     }
     move() {
         if (this.x < mouse.x) {
@@ -89,14 +99,26 @@ class Player {
 }
 
 class Ghost {
+    static idleGhost = new Image();
 
+    constructor() {
+        this.x = x;
+        this.y = y;
+        this.runMaxFrame = 8;
+        this.xFrame = 0 ;
+        this.sWidth = 43;
+        this.sHeight = 50 ;
+        this.takt = 7;
+        this.speed = 5;
+    }
 }
 
 let player = new Player(cWidth / 2, cHeight / 2)
-let ghost = new Ghost()
+Player.loadImages()
 
 function start() {
-    // console.log(gameFrame);
+    if (!isRunning) return;
+
     ctx.clearRect(0,0, cWidth, cHeight);
     ctx.drawImage(bgImg, 0, 0, cWidth, cHeight) // поправити зображення
         
@@ -104,8 +126,31 @@ function start() {
     player.move()
 
     gameFrame++;
-    requestAnimationFrame(start)
+    requstId = requestAnimationFrame(start)
 }
 
-//setInterval(start, 100)
-start()
+document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape'){
+        isRunning = !isRunning;
+        if(isRunning){
+            start()
+        }else{
+            cancelAnimationFrame(requstId)
+        }
+    }
+})
+
+const images = [
+    bgImg,
+    Player.heroImg,
+    Player.runLeftImg,
+    Player.runRightImg
+]
+let loadImages = 0
+images.forEach( img => {
+    img.onload = () => {
+        loadImages ++
+        if(loadImages === images.length)
+            start()
+    }
+});
