@@ -48,7 +48,6 @@ class Player {
         this.takt = 7
         this.speed = 5
     }
-
     drawImg(img, maxFrame){
         ctx.drawImage(
             img,
@@ -102,15 +101,63 @@ class Ghost {
     static idleGhost = new Image();
 
     constructor() {
-        this.x = x;
-        this.y = y;
-        this.runMaxFrame = 8;
+        this.runMaxFrame = 11;
         this.xFrame = 0 ;
         this.sWidth = 43;
         this.sHeight = 50 ;
         this.takt = 7;
-        this.speed = 5;
+
+        this.x = cWidth + 43;
+        this.y = Math.random() * (cHeight - this.sWidth);
+        this.speed = Math.random() * 5 + 0.01;
     }
+
+    move(){
+        console.log(this.x, this.y)
+        this.x -= this.speed;
+
+        ctx.drawImage(
+            Ghost.idleGhost,
+            this.sWidth * this.xFrame,
+            0,
+            this.sWidth,
+            this.sHeight,
+            this.x,
+            this.y,
+            this.sWidth,
+            this.sHeight,
+        )
+        if (gameFrame % this.takt === 0){
+            this.xFrame = (this.xFrame + 1) % this.runMaxFrame
+        }
+    }
+}
+Ghost.idleGhost.src = imgFolder + 'ghostLeft.png';
+
+function checkCollision(obj1, obj2){
+    let dx = obj1.x - obj2.x
+    let dy = obj1.y - obj2.y
+    
+    let distance = Math.sqrt(dx*dx+dy*dy)
+    return distance < obj1.sHeight / 2 + obj2.sHeight / 2
+}
+
+let ghostArray = []
+
+function ghostMaker(){
+    if(gameFrame % 50 === 0){
+        ghostArray.push(new Ghost())
+    }
+    ghostArray.forEach(ghost => ghost.move())
+
+    ghostArray = ghostArray.filter(ghost => {
+        if (ghost.x < 0 ) return false;
+
+        if (checkCollision(player, ghost)){
+            score++
+            return false
+        }
+    })
 }
 
 let player = new Player(cWidth / 2, cHeight / 2)
@@ -124,6 +171,7 @@ function start() {
         
     player.update()
     player.move()
+    ghostMaker()
 
     gameFrame++;
     requstId = requestAnimationFrame(start)
@@ -144,7 +192,8 @@ const images = [
     bgImg,
     Player.heroImg,
     Player.runLeftImg,
-    Player.runRightImg
+    Player.runRightImg,
+    Ghost.idleGhost
 ]
 let loadImages = 0
 images.forEach( img => {
