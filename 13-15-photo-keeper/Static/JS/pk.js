@@ -7,9 +7,11 @@ class MainMenu{
         this.init()
     }
     init(){
-
+        this.trigger.addEventListener('click', () => {
+            this.container.classList.toggle('menuOpened')
+        })
+        
     }
 }
 
-let m = new MainMenu()
-
+new MainMenu('.menuTriggier','.menuContainer')
