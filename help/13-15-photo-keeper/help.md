@@ -7,7 +7,7 @@ Flask - це мікрофреймворк, він надає велику сво
 Нагадаємо типову структуру файлів для проекту Flask, яка добре підходить для невеликих додатків:
 
 ```
-my_flask_project/
+my_flask_project/templatePictureExample
 │
 ├── config.py
 ├── models.py
