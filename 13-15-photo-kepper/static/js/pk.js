@@ -43,7 +43,7 @@ class PhotoGallery{
             'Що це, якщо не любов? Х)'
         ];
         this.picturesDB = this.generatePicturesDB(25)
-        console.log(this.picturesDB)
+        //console.log(this.picturesDB)
         this.pictureContainer = document.querySelector('.picturesContainer')
     }
     randomElement(array){
@@ -73,7 +73,6 @@ class PhotoGallery{
     }
     showPictures(){
         const pictureTemplate = document.getElementById('templatePictureExample')
-
         const pictureExample = pictureTemplate.content.querySelector('.pictureExample')
         this.pictureContainer.innerText = ''
 
@@ -88,6 +87,13 @@ class PhotoGallery{
 
         })
         // console.log(pictureExample)
+    }
+    initEventListeners(){
+        this.pictureContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('pictureImg')){
+                this.openPhoto(e.target);
+            }
+        });    
     }
 }
 
