@@ -45,6 +45,9 @@ class PhotoGallery{
         this.picturesDB = this.generatePicturesDB(25)
         //console.log(this.picturesDB)
         this.pictureContainer = document.querySelector('.picturesContainer')
+        this.openedPictureContainer = document.querySelector('.openedPictureContainer')
+        this.closeButton = document.querySelector('.closeButton')
+        // this.comensContainer = document.querySelector('.commentsContainer')
     }
     randomElement(array){
         return array[Math.floor(Math.random() * array.length)]
@@ -88,12 +91,30 @@ class PhotoGallery{
         })
         // console.log(pictureExample)
     }
+    showCheakedPicture(picture){
+        this.openedPictureContainer.querySelector('.openedPictureImg').src = picture.src
+        this.openedPictureContainer.querySelector('.openedPictureImg').style.filter = picture.effect
+        this.openedPictureContainer.querySelector('.openedPictureDescription').innerText = picture.description
+        this.openedPictureContainer.querySelector('.openedPictureCommentsNumber').innerText = picture.commentsNumber
+        this.openedPictureContainer.querySelector('.openedPictureStars').innerText = picture.likes
+        //const pictureTemplate = document.getElementById('templateOpenedPicture')
+    }
     initEventListeners(){
         this.pictureContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('pictureImg')){
-                this.openPhoto(e.target);
+                const src = e.target.src
+                const picture = this.picturesDB.find( (pic) => pic.src === src)
+                
+                if (picture){
+                    this.showCheakedPicture(picture);
+                }
             }
-        });    
+        });   
+        
+        this.closeButton.addEventListener('click', (e) => {
+            this.openedPictureContainer.classList.add('hidden')
+            this.openedPictureContainer.innerText = '';
+        });
     }
 }
 
