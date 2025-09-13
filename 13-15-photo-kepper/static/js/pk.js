@@ -47,7 +47,8 @@ class PhotoGallery{
         this.pictureContainer = document.querySelector('.picturesContainer')
         this.openedPictureContainer = document.querySelector('.openedPictureContainer')
         this.closeButton = document.querySelector('.closeButton')
-        // this.comensContainer = document.querySelector('.commentsContainer')
+        this.commentsContainer = document.querySelector('.pictureComentSelecter') || document.createElement('div');
+        this.initEventListeners();
     }
     randomElement(array){
         return array[Math.floor(Math.random() * array.length)]
@@ -92,19 +93,39 @@ class PhotoGallery{
         // console.log(pictureExample)
     }
     showCheakedPicture(picture){
+        console.log(picture);
+        console.log(this.openedPictureContainer);
+
         this.openedPictureContainer.querySelector('.openedPictureImg').src = picture.src
         this.openedPictureContainer.querySelector('.openedPictureImg').style.filter = picture.effect
-        this.openedPictureContainer.querySelector('.openedPictureDescription').innerText = picture.description
-        this.openedPictureContainer.querySelector('.openedPictureCommentsNumber').innerText = picture.commentsNumber
-        this.openedPictureContainer.querySelector('.openedPictureStars').innerText = picture.likes
+        this.openedPictureContainer.querySelector('.descriptionText').innerText = picture.description
+        this.openedPictureContainer.querySelector('.pictureComments').innerText = picture.commentsNumber
+        this.openedPictureContainer.querySelector('.pictureStars').innerText = picture.likes
+        
+        const commentTemplate = document.getElementById('commentTemplate')
+        //console.log('0002: ', commentTemplate)
+        const commentExample = commentTemplate.content.querySelector('.commentBlock')
+        //console.log('0001: ', commentExample)
+
+        this.commentsContainer.innerText = '';
+
+        picture.comments.forEach( (commenTExt) => {
+            const comment = commentExample.cloneNode(true);
+            comment.querySelector('.commentText').innerText = commenTExt;
+            this.commentsContainer.append(comment);
+        });
+
+        
+        this.openedPictureContainer.classList.remove('hidden');
+        
         //const pictureTemplate = document.getElementById('templateOpenedPicture')
     }
     initEventListeners(){
         this.pictureContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('pictureImg')){
-                const src = e.target.src
+                const src = e.target.getAttribute('src')
                 const picture = this.picturesDB.find( (pic) => pic.src === src)
-                
+
                 if (picture){
                     this.showCheakedPicture(picture);
                 }
@@ -113,7 +134,7 @@ class PhotoGallery{
         
         this.closeButton.addEventListener('click', (e) => {
             this.openedPictureContainer.classList.add('hidden')
-            this.openedPictureContainer.innerText = '';
+            //this.openedPictureContainer.innerText = '';
         });
     }
 }
